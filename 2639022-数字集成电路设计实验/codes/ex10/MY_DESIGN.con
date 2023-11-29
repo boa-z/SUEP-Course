@@ -1,0 +1,26 @@
+# Remove any existing constraints and attributes
+reset_design
+
+######################
+#                    #
+#  CLOCK DEFINITION  #
+#                    #
+######################
+
+# A 333Mhz clock is a 3.Ons period:
+#
+create_clock -period 3.0 [get_ports clk]
+
+# External clock source latency is 700ps or 0.7ns
+#
+set_clock_latency -source -max 0.7 [get_clocks clk]
+
+# The maximum internal clock network insertion delay or latency is 300ps or 0.3 ns:
+#
+set_clock_latency -max 0.3 [get_clocks clk]
+
+# The +/-30ps internal clock delay variation to register clock pins results in a 60ps worst case skew or uncertainty, if you launch
+# late (+30ps) and capture early (-30ps)r; Add 40ps due to jitter and 50ps for setup margin;
+# This equals 150ps or 0.15 ns of total uncertainty.
+#
+set_clock_uncertainty -setup 0.15 [get_clocks clk]
