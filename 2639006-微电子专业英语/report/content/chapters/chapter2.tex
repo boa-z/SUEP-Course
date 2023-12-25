@@ -1,0 +1,64 @@
+% \chapter{Background}
+
+% A wide variety of neuron models have been used in hardware implementations of SNNs, including the Izhikevich model [2] and variations of the Integrate-andFire (IF) model. 
+% Our approach adopts the LIF neuron model, which simulates the membrane voltage leaking of biological neurons with an exponential process:
+
+% $$
+% V(t_2) = V(t_1) \cdot e^{-(t_2-t_1)/\tau}
+% $$
+
+% where $V(t)$ are the neuron states at time $t$ (the membrane voltage in biological neurons), and $\tau$ is the leaky constant. For the time-stepped updating algorithm, the values of $t$ are discrete and the term $t_2-t_1$ will be a constant $\Delta t$. For the event-driven algorithm, $t_1$ is the timestamp of the previous event that updated this neuron, and $t_2$ is the timestamp of the current event.
+
+% The neuron state is also changed by input current from other neurons. A weight $W_{i,j}$ is assigned to the synapse from neuron $i$ to neuron $j$ . When neuron i generates an output spike, W i;j is added to the state of neuron j after a fixed delay. Therefore, for the time-stepped updating algorithm, the updating equation of neuron j from time step $t_n$ to $t_{n+1}$ is
+
+% $$
+% V(t_n+1) = V(t_n) \cdot e^{-\Delta t/\tau} + \sum_{i=0}^{m-1} s_i(t_n) \cdot W_{i,j}
+% $$
+
+% where $m$ is the fan-in of neuron $j$ , and $s_i(t_n)$ is the spiking status of neuron $i$ at time step $t_n$ . The spiking status $s_i$ is 1 if neuron $i$ outputs a spike, otherwise it is 0. For the event-driven updating algorithm, an update is triggered by the activation event of neuron $i$. For each neuron $j$ , where neuron $j$ is a successor of neuron $i$, the update is carried out by
+
+% $$
+% V(t') = V(t) \cdot e^{-(t'-t)/\tau} + W_{i,j}
+% $$
+
+% where the parameters have the same meaning as in Eq. (1).
+
+% After updating the neuron states, a threshold value $V_{th}$ is used to decide whether a neuron is activated and outputs a spike. After a neuron activates, its state is reset to $V_{reset}$ .
+
+% \rule{\linewidth}{0.5pt}
+
+\chapter{背景}
+
+在SNNs的硬件实现中，使用了各种神经元模型，包括Izhikevich模型2和Integrate-andFire (IF)模型的变体。
+我们的方法采用了LIF神经元模型，它用指数过程模拟了生物神经元的膜电压泄漏：
+
+$$
+V(t_2) = V(t_1) \cdot e^{-(t_2-t_1)/\tau}
+$$
+
+其中$V(t)$是神经元在时间$t$的状态（生物神经元的膜电压），$\tau$是泄漏常数。
+对于时间步进的更新算法，$t$的值是离散的，而$t_2-t_1$的项是一个常数$\Delta t$。
+对于事件驱动的算法，$t_1$是上一个更新这个神经元的事件的时间戳，$t_2$是当前事件的时间戳。
+
+神经元的状态也会受到其他神经元的输入电流的影响。
+一个权重$W_{i,j}$被分配给从神经元$i$到神经元$j$的突触。
+当神经元$i$产生一个输出脉冲时，$W_{i,j}$在一个固定的延迟后被加到神经元$j$的状态上。
+因此，对于时间步进的更新算法，神经元$j$从时间步$t_n$到$t_{n+1}$的更新方程为
+
+$$
+V(t_n+1) = V(t_n) \cdot e^{-\Delta t/\tau} + \sum_{i=0}^{m-1} s_i(t_n) \cdot W_{i,j}
+$$
+
+其中$m$是神经元$j$的输入数，$s_i(t_n)$是神经元$i$在时间步$t_n$的发放状态。
+如果神经元$i$输出一个脉冲，发放状态$s_i$为1，否则为0。
+对于事件驱动的更新算法，一个更新是由神经元$i$的激活事件触发的。
+对于每个神经元$j$，其中神经元$j$是神经元$i$的后继，更新是通过
+
+$$
+V(t') = V(t) \cdot e^{-(t'-t)/\tau} + W_{i,j}
+$$
+
+来进行的，其中的参数和方程(1)中的含义相同。
+
+在更新神经元状态之后，一个阈值$V_{th}$被用来决定一个神经元是否被激活并输出一个脉冲。
+在一个神经元激活之后，它的状态被重置为$V_{reset}$。

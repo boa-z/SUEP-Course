@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* 2639006-微电子专业英语
+
+## 2023-11-26
+
+### Added
+
 * 2639022-数字集成电路设计实验
 
 ### Changed

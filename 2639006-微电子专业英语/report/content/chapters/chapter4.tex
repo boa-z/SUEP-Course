@@ -1,0 +1,196 @@
+% \chapter{System Design}
+
+% \section{Hybrid updating algorithm}
+
+% We use an updating algorithm that is a hybrid of the conventional time-stepped updating algorithm and the event-driven updating algorithm. 
+% In this subsection, we first brieﬂy describe these two existing algorithms and then present our hybrid.
+
+% The time-stepped algorithm processes all of the neurons based on discrete time steps. Within each time step, the state of each neuron is updated and checked to decide whether it outputs a spike. 
+% Information about these spikes is stored for use in future time steps according to their transmission delay. 
+% This algorithm can waste computing resources since it schedules unnecessary operations for neurons that do not receive any input spikes. 
+% The event-driven algorithm, on the other hand, processes only the activation events of neurons. 
+% An event queue is used as storage for the events, and is sorted by the event timestamps. 
+% After each event dequeues from the event queue, only the states of successive neurons are updated, thereby generating new events. 
+% In this way, unnecessary operations are avoided. 
+% Although the event-driven algorithm can be efficient, the hardware implementation of the event queue is complicated since it requires sorting the events whenever a new event enqueues.
+
+% Therefore, we combine the time-stepped and eventdriven algorithm, as described in Algorithm 1. 
+% We use multiple event queues, each of which is tagged with timestamp $Q_n$ (where n ranges from $0$ to $D-1$ where $D$ is the maximum delay allowed), to store the events to be processed after n time steps from the current time. 
+% In this way, events with the same timestamp can be stored in the same queue with no sorting operation required. 
+% To manage these event queues, time steps are maintained globally. 
+% At each time step, the event queue with tag $Q_0$ is set to be the active queue and its events are processed. 
+% Once an event queue is empty, the current time step finishes. 
+% Before the next time step, the tags of all event queues decrease by one, such that $Q_1 - Q_{D-1}$ becomes $Q_0 - Q_{D-2}$ and $Q_0$ is reused in a circular manner as $Q_{D-1}$ . 
+% Sorting operations are avoided in this hybrid updating algorithm, which reduces the system’s run-time latency.
+
+% \rule{\linewidth}{0.5pt}
+
+\chapter{系统设计}
+
+\section{混合更新算法}
+
+我们使用的更新算法是传统的时间步进更新算法和事件驱动更新算法的混合。
+在本小节中，我们首先简要描述这两种现有算法，然后介绍我们的混合算法。
+
+时间步长算法根据离散时间步长处理所有神经元。 
+在每个时间步内，每个神经元的状态都会被更新和检查，以确定它是否输出尖峰。
+有关这些尖峰的信息被存储起来，以便根据它们的传输延迟在未来的时间步中使用。
+该算法可能会浪费计算资源，因为它为不接收任何输入尖峰的神经元安排不必要的操作。
+另一方面，事件驱动算法仅处理神经元的激活事件。 事件队列用于存储事件，并按事件时间戳排序。
+每个事件从事件队列中出队后，仅更新连续神经元的状态，从而生成新事件。 这样就避免了不必要的操作。
+尽管事件驱动算法可能很高效，但事件队列的硬件实现很复杂，因为每当有新事件入队时就需要对事件进行排序。
+
+因此，我们结合了时间步进和事件驱动算法，如算法 1 中所述。
+我们使用多个事件队列，每个事件队列都标有时间戳 $Q_n$（其中 n 范围从 $0$ 到 $D-1$，其中 $D$ 是允许的最大延迟），存储从当前时间开始n个时间步后要处理的事件。 
+这样，具有相同时间戳的事件就可以存储在同一个队列中，而无需进行排序操作。 为了管理这些事件队列，需要全局维护时间步长。 
+在每个时间步，带有标记 $Q_0$ 的事件队列被设置为活动队列，并处理其事件。 一旦事件队列为空，当前时间步就结束。 
+在下一个时间步之前，所有事件队列的标签减一，使得 $Q_1 - Q_{D-1}$ 变为 $Q_0 - Q_{D-2}$ 并且 $Q_0$ 以循环方式重用： $Q_{D-1}$ 。 
+这种混合更新算法避免了排序操作，从而减少了系统的运行时延迟。
+
+% \section{System architecture}
+
+% The architecture of the proposed module is shown in Fig. 1.
+
+% \begin{algorithm}
+%     \caption{Hybrid updating algorithm}
+%     \KwData{Event queue $Q_0, Q_1, \dots, Q_{D-1}$}
+%     \For{t $\gets$ 0: $\Delta t$: T}{
+%         \While{\textbf{not} $Q_0$.is\_empty()}{
+%             event $\gets Q_0$.dequeue()\;
+%             \For{neuron in event.successors}{
+%                 neuron.update\_state\;
+%                 neuron.check\_activation\;
+%                 \If{neuron.is\_activated()}{
+%                     new\_event $\gets$ neuron.form\_new\_event()\;
+%                     delay $\gets$ new\_event.get\_delay()\;
+%                     $Q_{delay}$.enqueues(new\_event)\;
+%                 }
+%             }
+%         }
+%         \For{i $\gets$ 1: D-1}{
+%             $Q_{i-1} \gets Q_{i}$\;
+%         }
+%         $Q_{D-1} \gets Q_0$
+%     }
+% \end{algorithm}
+
+% There are four main memory components, each of which has its own controller to manage its reading and writing operations. 
+% The event queues submodule is the hardware implementation of the multiple event queues described above in Section 4.1. 
+% The event controller submodule is in charge of managing these event queues by enqueuing generated events and dequeuing events for processing.
+% The weight memory and state memory submodules are used to store weight and state data, respectively.
+% The weight memory submodule is read-only, while the state controller also controls the writing back of updated states from the state updater.
+% Another memory submodule is the delay memory, which is read-only and stores the delay values of different events.
+% Details about the implementation of the memory components are discussed below in Section 4.3.
+
+% The state updater carries out the main body of computation. 
+% It first decays the neuron states and then sums the incoming weights to update the neuron states.
+% Checks for neuron activation are then carried out to decide whether a new event is generated.
+% If any neuron is activated, its neuron state is reset to a predetermined constant.
+% The state updater can exploit the parallelism of SNN by updating multiple neuron states at the same time.
+% The layered structure of SNN ensures that the successors of a neuron are independent of each other, which makes simultaneous updating possible.
+
+% The execution ﬂow is as follows. 
+% The event controller receives controlling signals and values of the current time step from the system controller (which is omitted from Fig. 1 for clarity).
+% It then sets the current event queue to be active and sequentially reads events from it.
+% The event data is sent to the weight controller and the state controller.
+% They access the weight and state memory with the event data and then send them to the state updater.
+
+% \begin{figure}[htb]
+% \begin{center}
+% \includegraphics[width=0.8\textwidth]{../assets/Fig1.jpg}
+% \end{center}
+% \vspace{-0.1in}  
+% \caption{Architecture of the proposed system.}
+% \label{fig:Architecture of the proposed system.}
+% \end{figure}
+
+% If there are activation events after the state update, these events go through the delay controller to look up their delays.
+% The event controller calculates the corresponding destination event queues according to the delay, and writes the events to them.
+
+% The system works in an asynchronous manner to improve throughput.
+% For example, after the event controller sends event data to the weight and state controllers, it begins to read the event queue immediately.
+% When it collects the data request signal from the weight and state controllers, event data are sent again.
+% Communication between other submodules is similar, through requests and responses.
+% Another example is the source controller (also omitted from Fig. 1 for clarity) for the state updater.
+% It contains two First-In-First-Outs (FIFOs) to hold the operands of the state updater from the weight controller and the state controller.
+% In this way, although the latter two controllers have different memory access times, waiting between them is avoided, provided that the FIFOs still have space for incoming data.
+
+% \rule{\linewidth}{0.5pt}
+
+\section{系统架构}
+
+所提出模块的架构如图 1 所示。（翻译版已省略）
+
+有四个主要内存组件，每个组件都有自己的控制器来管理其读写操作。
+事件队列子模块是上面 4.1 节中描述的多个事件队列的硬件实现。
+事件控制器子模块负责通过将生成的事件入队和将事件出队进行处理来管理这些事件队列。
+权重存储器和状态存储器子模块分别用于存储权重和状态数据。
+权重存储子模块是只读的，而状态控制器还控制来自状态更新器的更新状态的写回。
+另一个内存子模块是延迟内存，它是只读的，存储不同事件的延迟值。
+有关存储器组件实现的详细信息将在下面第 4.3 节中讨论。
+
+状态更新器执行计算的主体。
+它首先衰减神经元状态，然后对输入权重求和以更新神经元状态。
+然后执行神经元激活检查以确定是否生成新事件。
+如果任何神经元被激活，其神经元状态将重置为预定常数。
+状态更新器可以通过同时更新多个神经元状态来利用 SNN 的并行性。
+SNN的分层结构保证了神经元的后继者彼此独立，这使得同步更新成为可能。
+
+执行流程如下。
+事件控制器从系统控制器（为了清楚起见，在图1中省略了）接收控制信号和当前时间步长的值。
+然后，它将当前事件队列设置为活动状态，并依次从中读取事件。
+事件数据被发送到权重控制器和状态控制器。
+他们使用事件数据访问权重和状态存储器，然后将它们发送到状态更新器。
+
+如果状态更新后有激活事件，这些事件将通过延迟控制器查找它们的延迟。
+事件控制器根据延迟计算出对应的目标事件队列，并将事件写入其中。
+
+系统以异步方式工作以提高吞吐量。
+例如，事件控制器向权重控制器和状态控制器发送事件数据后，立即开始读取事件队列。
+当它从重量和状态控制器收集数据请求信号时，事件数据被再次发送。
+其他子模块之间的通信类似，通过请求和响应。
+另一个例子是状态更新器的源控制器（为了清楚起见，图 1 中也省略了）。
+它包含两个先进先出（FIFO），用于保存来自权重控制器和状态控制器的状态更新器的操作数。
+这样，虽然后两个控制器具有不同的存储器访问时间，但只要 FIFO 仍有空间容纳传入数据，就可以避免它们之间的等待。
+
+% \section{Implementation}
+
+% We use signed 16-bit fixed-point numbers to represent the weights and neuron states. 
+% The maximum number of neurons is set to 16 384, which results in a 14-bit index for each neuron. 
+% The maximum number of neurons in one layer is 1024, with fully-connected synapses supported. 
+% This means that the maximum number of synapses is 16.8 million. 
+% The maximum delay is set to 16, which is adequate according to previous research.
+
+% The proposed module needs to store up to 32 MB of weight data. 
+% Since the amount of on-chip Block RAM (BRAM) of FPGA is often limited, it is impractical to store all of the weights on-chip. 
+% Therefore, we use external Double Data Rate (DDR) memory to store all of the weights, while implementing all of the other memory modules with BRAM. 
+% Considering that for each event the corresponding weights are always of the same group, we store these weights in consecutive spaces in the external memory. 
+% With this mapping, the burst read feature of the DDR memory can be exploited to optimize the latency of memory access.
+
+% For the event queues, we implement 16 FIFOs with BRAM that can be accessed separately with a 4-bit address. 
+% To implement the hybrid updating algorithm, the event controller always reads the FIFO with the lower four bits of the current time register.
+% After a new event is generated by the state updater and the delay is obtained from the delay controller, the delay value is added to the current time and the lower four bits of the result are used to select the correct FIFO to which to write the data.
+
+% The operations of the weight updater are mainly the addition of weights and neuron states and the comparison of updated states with the threshold parameter. The decay of neurons is also carried out by the weight updater. For simplicity, the exponential computation is implemented with the subtraction of a constant. To fully utilize the memory access bandwidth, 32 adders and 32 comparators are instantiated in the weight updater. Further analysis in Section 5.4 below shows that neither the throughput of the weight updater nor its consumption of hardware resources is limiting factors of the proposed module.
+
+% \rule{\linewidth}{0.5pt}
+
+\section{执行}
+
+我们使用带符号的 16 位定点数来表示权重和神经元状态。 
+神经元的最大数量设置为 16 384，这导致每个神经元的索引为 14 位。 一层最大神经元数量为1024个，支持全连接突触。 
+这意味着突触的最大数量为 1680 万个。 最大延迟设置为 16，根据之前的研究这已经足够了。
+
+建议的模块需要存储最多 32 MB 的重量数据。 由于 FPGA 的片上 Block RAM (BRAM) 的数量通常是有限的，因此将所有权重存储在片上是不切实际的。 
+因此，我们使用外部双倍数据速率 (DDR) 存储器来存储所有权重，同时使用 BRAM 实现所有其他存储器模块。 
+考虑到每个事件对应的权重始终属于同一组，我们将这些权重存储在外部存储器的连续空间中。 
+通过这种映射，可以利用 DDR 存储器的突发读取功能来优化存储器访问的延迟。
+
+对于事件队列，我们使用 BRAM 实现 16 个 FIFO，可以使用 4 位地址单独访问。 
+为了实现混合更新算法，事件控制器总是读取 FIFO 中当前时间寄存器的低四位。 
+状态更新器生成新事件并从延迟控制器获取延迟后，将延迟值与当前时间相加，结果的低四位用于选择要写入数据的正确 FIFO 。
+
+权重更新器的操作主要是权重和神经元状态的相加以及更新后的状态与阈值参数的比较。 
+神经元的衰减也是由权重更新器执行的。 为了简单起见，指数计算是通过减去一个常数来实现的。 
+为了充分利用存储器访问带宽，权重更新器中实例化了 32 个加法器和 32 个比较器。 
+下面第 5.4 节中的进一步分析表明，权重更新器的吞吐量及其对硬件资源的消耗都不是所提出模块的限制因素。
