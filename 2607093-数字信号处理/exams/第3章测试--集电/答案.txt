@@ -1,0 +1,10 @@
+1. C
+2. D
+3. A
+4. A
+5. A
+6. FALSE
+7. TRUE
+8. FALSE
+9. FALSE
+10. TRUE

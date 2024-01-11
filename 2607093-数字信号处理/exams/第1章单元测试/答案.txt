@@ -1,0 +1,5 @@
+1. FALSE
+2. TRUE
+3. A
+4. TRUE
+5. D

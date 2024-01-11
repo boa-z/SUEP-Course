@@ -1,0 +1,207 @@
+\documentclass[lang=cn,10pt]{elegantbook}
+
+\title{\LaTeX{} 2639002.01实验报告课程论文模板}
+% \subtitle{Elegant\LaTeX{} 经典之作}
+
+\author{\color{red}姓名+学号}
+\institute{Elegant\LaTeX{} Program}
+\date{2023年11月13日}
+\version{4.3}
+% \bioinfo{摘要}{\color{red}针对XX问题，本论文利用支持向量机/图分类器（请同学们二选一）对该问题涉及的XX数据进行二分类，实验结果为XX。该实验结果表明XX。}
+
+\extrainfo{不要以为抹消过去，重新来过，即可发生什么改变。—— 比企谷八幡}
+
+\setcounter{tocdepth}{3}
+
+\logo{logo-blue.png}
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+% 额外package
+\usepackage{xeCJK} % 在公式里输入中文
+\xeCJKsetup{CJKmath=true} % 在公式里输入中文
+\usepackage[makeroom]{cancel} % 删去符号，X
+
+% 修改标题页的橙色带
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+
+\input{defs.tex}
+
+\def\ie{{\textit{i.e.}}}
+\def\eg{{\textit{e.g.}}}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{摘要（动机、目前相似的产品、自己的和相似的优缺点、本次报告所做的核心内容、通过本次报告发现了什么、遇到了什么问题、怎么解决的、未来可以做哪些工作，150-300字）}
+
+\chapter{引言（动机、目前相似的产品、自己的和相似的优缺点、本次报告所做的核心内容、通过本次报告发现了什么、遇到了什么问题、怎么解决的、本次报告的基本结构，500-1000字）}
+
+\chapter{任务模块总览（说明整体任务的目标，以及简要说明每一个任务模块的功能。）}
+
+说明整体任务的目标，以及简要说明每一个任务模块的功能。
+
+\chapter{任务模块详细内容、任务模块功能描述、任务模块运行结果。}
+
+详细展示任务模块详细内容、任务模块功能描述、任务模块运行结果。例如：
+
+\section{任务模块1：721}
+
+\subsection{任务模块1的任务详细内容}
+
+(a) Plot a graph of the noise margins of the CMOS
+inverter (similar to Fig. 7.9) for VDD = 3.3 V,
+VT N = 0.75 V, and VT P = −0.75 V. (b) Repeat
+for VDD = 2.0 V, VT N = 0.50 V, and VT P =
+−0.50 V.
+
+\cite{ltc7890module}
+
+\subsection{任务模块1的功能描述}
+
+\begin{lstlisting}[language=Python, caption=721 CMOS noise margin]
+clear;clc;close all;
+KR=0:0.001:12;
+n_sample=length(KR);
+% VDD=3.3; %
+% VTN=0.75; %
+% VTP=-0.75; 
+VDD=2.5;
+VTN=0.5;
+VTP=-0.5;
+
+VIL=2*sqrt(KR)*(VDD-VTN+VTP)./((KR-1).*sqrt(KR+3))-(VDD-KR*VTN+VTP)./(KR-1);
+
+VOH=((KR+1).*VIL+VDD-KR*VTN-VTP)/2;
+
+VIH=2*KR*(VDD-VTN+VTP)./((KR-1).*sqrt(1+3*KR))-(VDD-KR*VTN+VTP)./(KR-1);
+
+VOL=((KR+1).*VIH-VDD-KR*VTN-VTP)./(2*KR);
+
+NML=VIL-VOL;
+
+NMH=VOH-VIH;
+
+figure(1);
+plot(KR,NML,'r','DisplayName','NM_L');hold on;
+plot(KR,NMH,'b','DisplayName','NM_H');
+grid on;
+xlabel('K_R=0:0.001:12');
+ylabel('Noise Margin');
+title('CMOS 噪声容限');
+xlim([min(KR) max(KR)]);
+ylim([min([min(NML) min(NMH)]) max([max(NML) max(NMH)])]);
+legend;
+
+\end{lstlisting}
+
+\subsection{任务模块1的运行结果}
+
+\cite{ltc7890module}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=6cm,trim=0in 0in 0in 0in, clip]
+{image/CMOS_noise_margin.pdf}
+\end{center}
+\vspace{-0.1in}  
+\caption{CMOS noise margin.}
+\label{fig:CMOSnoisemargin}
+\end{figure}
+
+\section{任务模块2：720}
+
+\subsection{任务模块2的任务详细内容}
+
+\cite{st1229}.
+
+\cite{9929278}.
+
+Use SPICE to plot the VTC for a CMOS inverter with (W/L)N = 2/1, (W/L)P = 5/1,
+VDD = 3.3 V, VSS = 0 V, VT N = 0.75 V, and
+VT P = −0.75 V. Repeat if the threshold voltages
+are mismatched with values VT N = 0.85 V and
+VT P = 0.65 V. Repeat for (W/L)N = 2/1 and
+(W/L)P = 4/1 with the original threshold voltages. 
+Plot the three curves on one graph.
+
+\begin{lstlisting}[language=Python, caption=]
+\end{lstlisting}
+
+\subsection{任务模块2的功能描述}
+
+\begin{equation*}
+\mathrm{.tran}\;\mathrm{1m}\;\mathrm{steady}\;\mathrm{startup}
+\end{equation*}
+
+\begin{lstlisting}[language=Python, caption=transient response]
+.tran 1m steady startup
+\end{lstlisting}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=6cm]{image/2023-10-31-720.png}
+\end{center}
+\vspace{-0.1in}  
+\caption{VTC3.}
+\label{fig:VTC3}
+\end{figure}
+
+\subsection{任务模块2的运行结果}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=6cm]{image/2023-10-30-720.pdf}
+\end{center}
+\vspace{-0.1in}  
+\caption{VTC3.}
+\label{fig:VTC3_results}
+\end{figure}
+
+\section{任务模块3：}
+
+\subsection{任务模块3的任务详细内容}
+
+Simulate the VTC for a CMOS inverter with Kn =
+2.5K p. Find the input voltage for which vO = vI
+and compare to the value calculated by hand. Use
+VDD = 2.5 V.
+
+\subsection{任务模块3的功能描述}
+
+\begin{lstlisting}[language=Python, caption=输出瞬态响应]
+.tran 2.5m steady startup
+\end{lstlisting}
+
+\begin{equation*}
+\mathrm{.tran\;2.5m\;steady\;startup}
+\end{equation*}
+
+\subsection{任务模块3的运行结果}
+
+\chapter{总结（在本次任务仿真过程中，发现了哪些问题，遇到了哪些困难，如何解决的，等等。）}
+
+在本次任务仿真过程中，发现了哪些问题，遇到了哪些困难，如何解决的，等等。
+
+\printbibliography[heading=bibintoc, title=\ebibname]
+
+
+% [1] 
+% \href{https://blog.csdn.net/qq_41311604/article/details/103428503}{二元分类(Binary Classfication)与logistic回归-CSDN博客}.
+
+% [2] \href{https://blog.csdn.net/the_ZED/article/details/128515334?ops_request_misc=&request_id=&biz_id=102&utm_term=\%E6\%9C\%BA\%E5\%99\%A8\%E5\%AD\%A6\%E4\%B9\%A0\%E7\%BA\%BF\%E6\%80\%A7\%E5\%9B\%9E\%E5\%BD\%92&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-5-128515334.142^v96^pc_search_result_base9&spm=1018.2226.3001.4187}{【机器学习】线性回归（理论）\_机器学习线性回归-CSDN博客} .
+
+% [3] \href{https://github.com/tonio73/data-science/tree/master}{github.com} .
+
+% [4]\href{https://blog.csdn.net/qq_42192693/article/details/121164645?ops_request_misc=\%257B\%2522request\%255Fid\%2522\%253A\%2522170365538016800225578043\%2522\%252C\%2522scm\%2522\%253A\%252220140713.130102334..\%2522\%257D&request_id=170365538016800225578043&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-121164645-null-null.142^v98^pc_search_result_base9&utm_term=\%E6\%94\%AF\%E6\%8C\%81\%E5\%90\%91\%E9\%87\%8F\%E6\%9C\%BA&spm=1018.2226.3001.4449}{机器学习：支持向量机（SVM）-CSDN博客} 
+\end{document}

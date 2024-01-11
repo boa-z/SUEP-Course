@@ -1,0 +1,5 @@
+1. C 5
+2. D 不小于M
+3. TRUE
+4. TRUE
+5. FALSE
