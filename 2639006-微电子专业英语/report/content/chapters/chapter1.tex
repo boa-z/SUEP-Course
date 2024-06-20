@@ -1,0 +1,57 @@
+% \chapter{Introduction}
+
+% Over recent years, Neural Networks (NNs) have been successfully deployed in a wide range of applications.
+% Compared to conventional Artificial Neural Networks (ANNs) which use analog values to represent activations inside the networks, 
+% Spiking Neural Networks (SNNs) imitate real biological neurons and encode the activation with the timing information of neuron spikes.
+% As opposed to ANNs, where the major operations are the matrix multiplication of weights and activation of network layers,
+% the spiking nature of SNNs avoids complex matrix multiplications and thus they require lower computation resources and are more energy efficient.
+
+% SNNs are built with neurons, which are connected with weighted synapses to form layers and networks.
+% As the basic building block of SNNs, each spiking neuron maintains a value to represent its current state.
+% Inputs to these neurons are spikes transmitted through synapses.
+% The neurons collect these input spikes and integrate the corresponding weights to update their internal states.
+% Whenever the state reaches a certain threshold value, the neuron is activated and outputs a spike to its successor neurons.
+% After a pre-configured propagation delay, the successors receive the spike and update their states accordingly.
+% Besides these common operating principles, different neuron models feature different neuron behaviors.
+% One of the most commonly used neuron models is the Leaky Integrate-and-Fire (LIF) model.
+% LIF neurons are inspired by the membrane voltage leaking in biological neurons, with their states decreasing over time if no input spikes present.
+
+% However, current computer architectures are not ideally suited to executing SNNs.
+% The massive parallelism inherent to an SNN, in which a large number of neurons work in a similar but simple manner, 
+% requires a more parallel architecture than that provided by current Central Processing Units (CPUs).
+% Although Graphics Processing Units (GPUs) can capitalize on the parallelism of SNN,
+% the kernel-launch programming paradigm of current GPUs makes them ill-suited to event-driven computation,
+% which is an important class of updating algorithms for SNNs (as described below in Section 4.1).
+% However, Field-Programmable Gate Arrays (FPGA) can address this issue since they provide parallel processing capability and are ﬂexibly reconfigurable to cater to different computing models.
+% Furthermore, FPGA are more energy efficient than current CPUs and GPUs.
+
+% This paper therefore proposes an FPGA-based SNN module implementation.
+% By utilizing an enhanced hybrid updating algorithm, the proposed module supports up to 16 384 neurons and 16.8 million synapses with minimal on-chip resources and 0.477 W power consumption.
+% We build a test platform to evaluate the proposed accelerator, on which we map an SNN model for the classification of handwritten digits in the MNIST [1] dataset.
+% The evaluation results show that the classification accuracy is 97.06\% and the performance for processing neuron firing events is $6.72 \times 10^5$ events per second, resulting in 161 frames per second for the MNIST dataset.
+
+% \rule{\linewidth}{0.5pt}
+
+\chapter{介绍}
+
+近年来，神经网络（NN）已成功部署在广泛的应用中。 
+与使用模拟值表示网络内部激活的传统人工神经网络 (ANN) 相比，尖峰神经网络 (SNN) 模仿真实的生物神经元，
+并使用神经元尖峰的时序信息对激活进行编码。 与 ANN 不同，ANN 的主要运算是权重的矩阵乘法和网络层的激活，
+SNN 的尖峰特性避免了复杂的矩阵乘法，因此它们需要的计算资源更少，并且能源效率更高。
+
+SNN 由神经元构建，神经元与加权突触连接以形成层和网络。 
+作为 SNN 的基本构建块，每个尖峰神经元都维护一个代表其当前状态的值。 
+这些神经元的输入是通过突触传输的尖峰。 神经元收集这些输入尖峰并整合相应的权重以更新其内部状态。 
+每当状态达到某个阈值时，神经元就会被激活并向其后继神经元输出一个尖峰。 
+经过预先配置的传播延迟后，后继者会收到尖峰并相应地更新其状态。 除了这些共同的操作原理之外，不同的神经元模型还具有不同的神经元行为。 最常用的神经元模型之一是泄漏积分与激发 (LIF) 模型。 LIF 神经元受到生物神经元中泄漏的膜电压的启发，如果不存在输入尖峰，它们的状态会随着时间的推移而降低。
+
+然而，当前的计算机架构并不非常适合执行 SNN。 
+SNN 固有的大规模并行性（其中大量神经元以相似但简单的方式工作）需要比当前中央处理单元 (CPU) 提供的并行架构更加并行的架构。 尽管图形处理单元 (GPU) 可以利用 SNN 的并行性，但当前 GPU 的内核启动编程范式使得它们不适合事件驱动计算，而事件驱动计算是 SNN 更新算法的一类重要内容（如下所述） 第 4.1 节）。 然而，现场可编程门阵列（FPGA）可以解决这个问题，因为它们提供并行处理能力，并且可以灵活地重新配置以满足不同的计算模型。 此外，FPGA 比当前的 CPU 和 GPU 更加节能。
+
+因此，本文提出了一种基于FPGA的SNN模块实现。 
+通过利用增强的混合更新算法，该模块以最少的片上资源和 0.477 W 功耗支持多达 16 384 个神经元和 1680 万个突触。
+我们构建了一个测试平台来评估所提出的加速器，
+在该平台上我们映射了一个 SNN 模型，用于对 MNIST 数据集中的手写数字进行分类。 
+评估结果显示，分类准确率为 97.06\%，
+处理神经元放电事件的性能为每秒 $6.72 \times 10^5$ 事件，导致 MNIST 数据集每秒处理 161 帧。
+

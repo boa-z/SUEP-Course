@@ -1,0 +1,72 @@
+% \chapter{Related Work}
+
+% \section{Hardware implementation}
+
+% Significant effort has been invested into the hardware implementation of SNNs and some designs have been presented in the form of digital [3–7] ,
+% analog [8,9] , and mixed analog/digital circuits [10,11] . 
+% For digital implementations, both FPGA-based systems and Application-Specific Integrated Circuit (ASIC) systems have been widely studied.
+
+% The TrueNorth chipis one of the most well-known ASIC designs. 
+% A core in the TrueNorth system contains a 256$\times$256 crossbar that implements the function of synapses and is configured to map incoming spikes to neurons. 
+% By integrating 4096 such processing cores, the TrueNorth chip carries 1 million neurons and 256 million synapses. 
+% The scale can be further extended by connecting multiple chips together. 
+% SpiNNaker [4] is another fully custom digital system and is composed of many small ARM processors. 
+% It features a custom interconnect communication scheme that is designed to be suitable for a large number of small spike-like messages and thus optimized for the communication behavior of a spike-based network architecture. 
+% Like TrueNorth, SpiNNaker supports the cascading of multiple chips to form large-scale systems.
+
+% Previous works [5–7] have also proposed several FPGAbased SNN accelerator designs. 
+% BlueHive [5] supports up to 65 536 neurons and 67.1 million synapses with a multiFPGA architecture. 
+% However, it implements the neurons with the complex Izhikevich modeland a low firing rate assumption, which targets biological neural network simulations and does not support real-world applications effectively. 
+% Another representative design is Minituar [6] , 
+% which treats the activation of neurons as events and utilizes an event-driven algorithm to update them. 
+% It implements up to 65 536 LIF neurons and 16.8 million synapses. 
+% Minituar faithfully models the exponential leaky process of neurons and employs on-chip Digital Signal Processors (DSPs) to carry out the fixed-point computation. 
+% It also maintains a hardware event queue that requires a sorting operation for each incoming event to support spikes with delays; this increases design complexity and run-time latency.
+
+% \rule{\linewidth}{0.5pt}
+
+\chapter{相关工作}
+
+\section{硬件实现}
+
+人们在 SNN 的硬件实现上投入了大量精力，并且一些设计以数字、模拟和混合模拟/数字电路的形式呈现。 
+对于数字实现，基于 FPGA 的系统和专用集成电路 (ASIC) 系统都已得到广泛研究。
+
+TrueNorth 芯片是最著名的 ASIC 设计之一。 
+TrueNorth 系统的核心包含一个 256$\times$256 的交叉开关，它实现突触的功能，并被配置为将传入的尖峰映射到神经元。 
+通过集成 4096 个此类处理核心，TrueNorth 芯片可承载 100 万个神经元和 2.56 亿个突触。 
+通过将多个芯片连接在一起，可以进一步扩展规模。 SpiNNaker是另一个完全定制的数字系统，由许多小型 ARM 处理器组成。 
+它具有定制的互连通信方案，该方案被设计为适合大量小的尖峰状消息，从而针对基于尖峰的网络架构的通信行为进行了优化。 
+与TrueNorth一样，SpiNNaker支持多个芯片级联形成大规模系统。
+
+之前的工作也提出了几种基于 FPGA 的 SNN 加速器设计。 
+BlueHive 采用 multiFPGA 架构，支持多达 65536 个神经元和 6710 万个突触。 
+然而，它使用复杂的 Izhikevich 模型和低放电率假设来实现神经元，其目标是生物神经网络模拟，不能有效支持现实世界的应用。 
+另一个代表性设计是Minituar ，它将神经元的激活视为事件，并利用事件驱动的算法来更新它们。 
+它实现了多达 65536 个 LIF 神经元和 1680 万个突触。 
+Minituar 忠实地模拟了神经元的指数泄漏过程，并采用片上数字信号处理器 (DSP) 来执行定点计算。 
+它还维护一个硬件事件队列，需要对每个传入事件进行排序操作，以支持带有延迟的尖峰； 这增加了设计复杂性和运行时延迟。
+
+% \section{Network model}
+
+% In recent years, Deep Belief Networks (DBNs)  have been proven to be effective in a variety of domains, such as machine vision  and machine audition  . 
+% DBN is a multilayered probabilistic generative model that uses a stacked structure of multiple Restricted Boltzmann Machines (RBMs). 
+% Previous work  has proposed methods to convert DBNs to LIF-based spiking DBNs and explored the processing of spiking DBNs with the event-driven algorithm.
+
+% Another studytried to solve the loss of accuracy arising in the conversion from Fully-Connected Networks (FCNs) and Convolutional Neural Networks (CNNs) to SNNs. 
+% The proposed optimization techniques include using Rectified Linear Units (ReLUs) with zero bias during training to suit spiking encoding, a weight normalization method to help regulate firing rates, and a threshold balancing scheme to enable low-latency processing.
+
+% In this paper, we use the techniques proposed in Ref. to train our SNN model and explore the efficient hardware implementation of such SNN models.
+
+% \rule{\linewidth}{0.5pt}
+
+\section{网络模型}
+
+近年来，深度置信网络（DBN）已被证明在机器视觉和机器试听等多个领域中有效。 
+DBN 是一种多层概率生成模型，使用多个受限玻尔兹曼机 (RBM) 的堆叠结构。 
+之前的工作提出了将 DBN 转换为基于 LIF 的尖峰 DBN 的方法，并探索了事件驱动算法对尖峰 DBN 的处理。
+
+另一项研究试图解决从全连接网络（FCN）和卷积神经网络（CNN）到 SNN 转换时出现的精度损失。 
+所提出的优化技术包括在训练期间使用零偏差的整流线性单元 (ReLU) 以适应尖峰编码、帮助调节发射率的权重归一化方法以及实现低延迟处理的阈值平衡方案。
+
+在本文中，我们使用参考文献中提出的技术训练我们的 SNN 模型并探索此类 SNN 模型的高效硬件实现。

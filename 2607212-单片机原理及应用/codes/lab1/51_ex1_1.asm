@@ -1,0 +1,13 @@
+ORG 0000H
+AJMP MAIN
+ORG 0030H
+
+MAIN: SETB  P2.2 ; 使能74HC573
+
+LOOP: 
+    NOP 
+    MOV  P0,#0FFH
+    NOP
+    MOV  P0,#00H
+    NOP
+    LJMP  LOOP

@@ -1,0 +1,19 @@
+; 2、第二步，下载程序，全速运行
+
+ORG 0000H
+AJMP MAIN
+ORG 0030H
+MAIN:  SETB  P2.2
+LOOP:
+    NOP
+    MOV  P0,#0FFH
+    ACALL   DELAY
+    MOV   P0,#0
+    ACALL   DELAY
+    LJMP  LOOP
+
+DELAY: MOV R6, #00H
+DELAY1:
+    MOV  R7, #80H
+    DJNZ  R7, $
+    DJNZ  R6, DELAY1

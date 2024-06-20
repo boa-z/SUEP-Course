@@ -1,0 +1,15 @@
+1. B
+2. A
+3. B
+4. A
+5. A
+6. TRUE
+7. TRUE
+8. TRUE
+9. TRUE
+10. TRUE
+11. TRUE
+12. TRUE
+13. TRUE
+14. FALSE
+15. TRUE

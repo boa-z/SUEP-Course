@@ -1,0 +1,258 @@
+%%
+%% This is file `sjtuvi.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% sjtuvi.dtx  (with options: `package')
+%% ------------------------------------------------------------------------
+%% Copyright (C) Shanghai Jiao Tong University
+%% The definition in this file is referred to the Visual Identity System
+%% from Shanghai Jiao Tong University (SJTU).
+%% See https://vi.sjtu.edu.cn for more information.
+%% 
+%% SJTUG implements the design but doesn't hold the copyright.
+%% Any commercial usage in this file should be acknowledged by
+%% the administration of SJTU.
+%% More infomation about the license,
+%% see https://vi.sjtu.edu.cn/index.php/articles/bulletin/16.
+%% ------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{sjtuvi}[2022/11/25 v3.0.0 Visual Identity System library for sjtubeamer]
+\newif\ifsjtubeamer@tempif%
+\newbox\sjtubeamer@tempbox%
+\newskip\sjtubeamer@h%
+\def\DefineOption#1#2#3{%
+  % #1: package
+  % #2: key
+  % #3: value
+  \DeclareOptionBeamer{#3}{\expandafter\def\csname sjtubeamer@#1@#2\endcsname{#3}}%
+}
+\def\EqualOption{TT\fi\ifEqualOption}
+\def\ifEqualOption#1#2#3{%
+  % #1: package
+  % #2: key
+  % #3: value
+  \edef\tempvar{\csname sjtubeamer@#1@#2\endcsname}%
+  \def\tempvalue{#3}%
+  \ifx\tempvar\tempvalue\sjtubeamer@tempiftrue\else\sjtubeamer@tempiffalse\fi%
+  \ifsjtubeamer@tempif%
+}
+\def\IsEmpty{TT\fi\ifIsEmpty}
+\def\ifIsEmpty#1{%
+  \setbox\sjtubeamer@tempbox=\hbox\bgroup\def\\{}#1\unskip\egroup%
+  \ifdim\wd\sjtubeamer@tempbox=0pt \sjtubeamer@tempiftrue%
+  \else\sjtubeamer@tempiffalse\fi%
+  \ifsjtubeamer@tempif%
+}
+\providecommand{\getcontribdir}[1]{contrib/#1}
+\providecommand{\getcontribpath}[2]{\getcontribdir{#1}/#2}
+\RequirePackage{tikz}
+\usetikzlibrary{fadings}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{external}
+\usetikzlibrary{backgrounds}
+\definecolor{sjtuRedPrimary}{RGB}{167,32,56}         % engred
+\definecolor{sjtuRedSecondary}{RGB}{240,131,0}       % orange
+\definecolor{sjtuRedTertiary}{RGB}{253,208,0}        % yellow
+\definecolor{sjtuBluePrimary}{RGB}{0,64,152}         % problue
+\definecolor{sjtuBlueSecondary}{RGB}{51,141,39}      % lightgreen
+\definecolor{sjtuBlueTertiary}{RGB}{0,81,78}         % lightgray
+\RequirePackage{array}
+\newcommand{\definelogo}[4]{
+  % #1: csname
+  % #2: path
+  % #3: horizontal clip (0~1)
+  % #4: vertical clip (0~1)
+  \pgfmathparse{notgreater(#3,#4)}
+  \ifnum\pgfmathresult=1
+    \begin{tikzfadingfrompicture}[name=#1]
+      \fill[black] (-1,-1) rectangle (1,1);
+      \node {\includegraphics[width=1.5cm]{#2}};
+    \end{tikzfadingfrompicture}
+  \else
+    \begin{tikzfadingfrompicture}[name=#1]
+      \fill[black] (-1,-1) rectangle (1,1);
+      \node {\includegraphics[height=1.5cm]{#2}};
+    \end{tikzfadingfrompicture}
+  \fi
+  \expandafter\providecommand\csname #1\endcsname[1][]{%
+    % ##1: override color, or opacity=... (optional)
+    \tikzexternaldisable%
+    \begin{tikzpicture}
+      \begin{scope}
+        \clip ({-1.0+#3},{-1.0+#4}) rectangle ({1.0-#3},{1.0-#4});
+        \fill [##1, path fading=#1] (-1,-1) rectangle (1,1);
+      \end{scope}
+    \end{tikzpicture}%
+  }
+}
+\definelogo{sjtubadge}{vi/sjtu-vi-sjtubadge.pdf}{0}{0}
+\definelogo{zhlogo}{vi/sjtu-vi-zhlogo.pdf}{0.13}{0.75}
+\definelogo{enlogo}{vi/sjtu-vi-enlogo.pdf}{0.13}{0.75}
+\definelogo{dlogo}{vi/sjtu-vi-dlogo.pdf}{0}{0}
+\definelogo{vlogo}{vi/sjtu-vi-vlogo.pdf}{0.8}{0.13}
+\definelogo{sjtubg}{vi/sjtu-vi-sjtubg.png}{0.3}{0.5}
+\definelogo{sjtugate}{vi/sjtu-vi-sjtugate.png}{0.25}{0.8}
+\newcommand{\secondaryinstlogo}[3][]{%
+  % #1: shortinst (optional)
+  % #2: longinst
+  % #3: logo
+  \hbox{%
+    \raggedright%
+    \resizebox{!}{1cm}{\vphantom{-}#3}%
+    \if\IsEmpty{#2}%
+    \else%
+      \if\IsEmpty{#1}%
+        \if\IsEmpty{#3}\else%
+          {\hskip0.31cm\vrule width0.5pt}\hskip0.31cm%
+        \fi%
+        \vbox to 1cm{%
+          \vfill%
+          \hbox{%
+            \noindent%
+            \fontsize{7pt}{0pt}\selectfont\mdseries\scshape%
+            \begin{tabular}{@{}l<{\vphantom{\vrule depth2pt}}@{}}
+              #2
+            \end{tabular}%
+          }%
+          \vskip-2pt%
+          \vfill%
+        }%
+      \else%
+        \if\IsEmpty{#3}\else%
+          {\hskip0.23cm\vrule width0.5pt}\hskip0.23cm%
+        \fi%
+        \vbox to 1cm{%
+          \def\\{}%
+          \vfill
+          \offinterlineskip
+          \hbox{%
+            \fontsize{13pt}{0pt}\selectfont%
+            \mdseries\sffamily #2%
+          }
+          \vskip0.08cm%
+          \hbox{%
+            \fontsize{5pt}{0pt}\selectfont%
+            \mdseries\scshape #1%
+          }
+          \vskip-\prevdepth\vskip0.14cm%
+        }%
+      \fi%
+    \fi%
+  }%
+}
+\providecommand{\stamptext}[2][structure]{
+  {
+    \providecolor{#1}{named}{sjtuRedPrimary}
+    \tikzset{external/export=false}
+    \begin{tikzpicture}[baseline=(nodetext.base)]
+      \node [white] (nodetext) at (0,0) {#2};
+      \pgfextracty{\sjtubeamer@h}{\pgfpointanchor{nodetext}{north}}%
+      \pgfextracty{\pgf@ya}{\pgfpointanchor{nodetext}{south}}%
+      \addtolength{\sjtubeamer@h}{-\pgf@ya}
+      \scoped[on background layer]
+        \fill [#1]
+          (-1.25*\sjtubeamer@h,0)
+          -- (-0.85*\sjtubeamer@h,0.3*\sjtubeamer@h)
+          -- (-0.85*\sjtubeamer@h,0.5*\sjtubeamer@h)
+          -- (0.85*\sjtubeamer@h,0.5*\sjtubeamer@h)
+          -- (0.85*\sjtubeamer@h,0.3*\sjtubeamer@h)
+          -- (1.25*\sjtubeamer@h,0)
+          -- (0.85*\sjtubeamer@h,-0.3*\sjtubeamer@h)
+          -- (0.85*\sjtubeamer@h,-0.5*\sjtubeamer@h)
+          -- (-0.85*\sjtubeamer@h,-0.5*\sjtubeamer@h)
+          -- (-0.85*\sjtubeamer@h,-0.3*\sjtubeamer@h) -- cycle;
+    \end{tikzpicture}
+  }
+}
+\def\sjtubeamer@compatible@false{false}
+\ifx\sjtubeamer@compatible\sjtubeamer@compatible@false
+\else
+  \usetikzlibrary{patterns.meta}
+  \tikzdeclarepattern{
+    name=stamp,
+    parameters={
+        \pgfkeysvalueof{/pgf/pattern keys/size},
+        \pgfkeysvalueof{/pgf/pattern keys/xshift},
+        \pgfkeysvalueof{/pgf/pattern keys/yshift},
+      },
+    defaults={
+        size/.initial = 5pt,
+        xshift/.initial = 0pt,
+        yshift/.initial = 0pt,
+      },
+    bottom left={(
+        -0.5*\pgfkeysvalueof{/pgf/pattern keys/size}
+        +\pgfkeysvalueof{/pgf/pattern keys/xshift},
+        -0.4*\pgfkeysvalueof{/pgf/pattern keys/size}
+        +\pgfkeysvalueof{/pgf/pattern keys/yshift}
+        )},
+    top right={(
+        0.5*\pgfkeysvalueof{/pgf/pattern keys/size}
+        +\pgfkeysvalueof{/pgf/pattern keys/xshift},
+        0.4*\pgfkeysvalueof{/pgf/pattern keys/size}
+        +\pgfkeysvalueof{/pgf/pattern keys/yshift}
+        )},
+    tile size={(
+        \pgfkeysvalueof{/pgf/pattern keys/size},
+        0.8*\pgfkeysvalueof{/pgf/pattern keys/size}
+        )},
+    code={
+        \def\sjtubeamer@s{\pgfkeysvalueof{/pgf/pattern keys/size}}%
+        \tikzset{x=0.5*\sjtubeamer@s,y=0.2*\sjtubeamer@s}
+        \fill[xshift=\pgfkeysvalueof{/pgf/pattern keys/xshift},
+          yshift=\pgfkeysvalueof{/pgf/pattern keys/yshift}]
+        (-0.25*\sjtubeamer@s,0)
+        -- (-0.17*\sjtubeamer@s,0.06*\sjtubeamer@s)
+        -- (-0.17*\sjtubeamer@s,0.1*\sjtubeamer@s)
+        -- (0.17*\sjtubeamer@s,0.1*\sjtubeamer@s)
+        -- (0.17*\sjtubeamer@s,0.06*\sjtubeamer@s)
+        -- (0.25*\sjtubeamer@s,0)
+        -- (0.17*\sjtubeamer@s,-0.06*\sjtubeamer@s)
+        -- (0.17*\sjtubeamer@s,-0.1*\sjtubeamer@s)
+        -- (-0.17*\sjtubeamer@s,-0.1*\sjtubeamer@s)
+        -- (-0.17*\sjtubeamer@s,-0.06*\sjtubeamer@s) -- cycle;
+      }
+  }
+\fi
+\ifx\sjtubeamer@compatible\sjtubeamer@compatible@false
+  \providecommand{\stamparray}[3]{}
+\else
+  \providecommand{\stamparray}[3]{
+    % #1: pattern size
+    % #2: starting point
+    % #3: ending point
+    \usebeamercolor{palette primary}
+    \fill [pattern={stamp[size=#1]},
+      pattern color=bg!50!fg] #2 rectangle #3;
+    \def\sjtubeamer@s{#1}%
+    \pgfmathparse{0.5*\sjtubeamer@s}\let\xs=\pgfmathresult%
+    \pgfmathparse{-0.4*\sjtubeamer@s}\let\ys=\pgfmathresult%
+    \fill [pattern={stamp[size=#1,xshift=\xs, yshift=\ys]},
+      pattern color=bg!50!fg] #2 rectangle #3;
+  }
+\fi
+\pgfdeclaredecoration{stampline}{initial}
+{
+  \state{initial}[
+    width=\pgfdecorationsegmentlength,
+    auto corner on length=\pgfdecorationsegmentlength]
+  {
+    \def\sjtubeamer@l{\pgfdecorationsegmentlength}%
+    \pgfpathlineto{\pgfpoint{0.25*\sjtubeamer@l}{0pt}}
+    \pgfpathlineto{\pgfpoint{0.33*\sjtubeamer@l}{0.06*\sjtubeamer@l}}
+    \pgfpathlineto{\pgfpoint{0.33*\sjtubeamer@l}{0.1*\sjtubeamer@l}}
+    \pgfpathlineto{\pgfpoint{0.67*\sjtubeamer@l}{0.1*\sjtubeamer@l}}
+    \pgfpathlineto{\pgfpoint{0.67*\sjtubeamer@l}{0.06*\sjtubeamer@l}}
+    \pgfpathlineto{\pgfpoint{0.75*\sjtubeamer@l}{0pt}}
+    \pgfpathlineto{\pgfpoint{\sjtubeamer@l}{0pt}}
+  }
+  \state{final}
+  {
+    \pgfpathlineto{\pgfpointdecoratedpathlast}
+  }
+}
+\endinput
+%%
+%% End of file `sjtuvi.sty'.

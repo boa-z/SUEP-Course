@@ -1,0 +1,66 @@
+go athena
+line x loc=0.00 spac=0.2
+line x loc=1 spac=0.1
+line x loc=1.1 spac=0.02
+line x loc=2 spac=0.25
+line y loc=0.00 spac=0.02
+line y loc=0.2 spac=0.1
+line y loc=0.4 spac=0.02
+line y loc=2 spac=0.5
+
+init silicon c.phos=5.0e18 orientation=100
+
+deposit oxide thick=0.50 divisions=5
+
+# 将 x=1um 左边的二氧化硅全部刻蚀掉。
+etch oxide left p1.x=1
+
+implant boron dose=1.0e15 energy=50 pearson tilt=7 rotation=0 amorph
+
+method fermi compress
+diffus time=30 temp=1000 nitro press=1.00
+
+extract name="xj" xj material="Silicon" mat.occno=1 x.val=0 junc.occno=1
+extract name="rho" sheet.res material="Silicon" mat.occno=1 x.val=0
+region.occno=1
+
+# 刻蚀全部氧化层。
+etch oxide all
+
+# 沉积铝厚度为 0.2um，将新淀积层分成 3 条网格线。
+deposit alum thickness=0.2 div=3
+
+etch alum right p1.x=1.0
+
+electrode name=anode x=0.0
+electrode name=cathode backside
+
+#（12） 保存器件结构并绘制器件结构图。
+structure outf=diodeex05_0.str
+tonyplot diodeex05_0.str
+
+### Part 2 ###
+
+# （1） 启动 Atlas 器件仿真器。
+go atlas
+
+# （2）选择仿真模型，设置物理模型为双极工艺， 将模型参数打印出来，
+models bipolar bbt.std print
+impact selb
+
+# （3） 数值方法选择语句（method），用来设置求解方程或参数的数值方法。
+method newton trap maxtrap=10 climit=1e-4
+
+# （4）命令执行语句（solve），solve是命令 atlas在一个或多个偏压点（bias point）
+solve init
+
+log outf=diodeex05.log
+
+solve vanode=-0.25 vstep=-0.25 vfinal=-10 name=anode
+
+tonyplot diodeex05.log -set diodeex05_log.set
+
+extract init infile="diodeex05.log"
+extract name="bv" x.val from curve(v."anode",abs(i."anode")) where y.val=1e-10
+extract name="leakage" y.val from curve(v."anode",abs(i."anode")) where x.val=-2
+
