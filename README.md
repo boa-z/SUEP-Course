@@ -1,12 +1,32 @@
 # SUEP-Course
 
-计划根据培养计划重新整理一下课程资料。为了减小体积，所有课本和软件都不上传，只上传笔记、课程讲义和作业。
+## Introduction
 
-~~发现大量实验报告含有个人信息，需要多多删除。~~
+本项目是本人根据上海电力大学集成电路设计与制造专业的培养计划整理的课程资料，也包含了一些自己的学习笔记、作业和实验报告。
 
-Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
+由于本人时间精力有限，难免会有一些错误，欢迎大家指正。也希望大家能够提交自己的学习资料，共同完善这个项目。
+
+## 文件结构
+
+```text
+.
+├── README.md
+├── assets
+├── notes # 笔记
+├── codes # 各种代码
+├── courseware # 课件
+├── exams # 试卷
+├── exercises # 习题
+└── report # 实验报告
+```
+
+为了减小体积，所有课本和软件都不上传，只上传笔记、课程讲义和作业。
 
 ## 版权说明
+
+> [IMPORTANT]
+> 本项目中的所有资料仅供学习交流使用，不得用于商业用途，否则后果自负。
+> 如果你认为本仓库的一些文件侵犯了您的权益，请提出issue，将会从仓库中彻底清除这些文件。
 
 由贡献者编写部分的许可如下：
 
@@ -15,25 +35,3 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 > 资料仅供参考，请自己判断其适用性。
 
 其他部分的版权归属于其各自的作者。
-
-如果你认为本仓库的一些文件侵犯了您的权益，请提出issue。将会从仓库中彻底清除这些文件。
-
-## 文件
-
-folder list
-
-* assets -- image
-* codes -- 各种代码，对于实验课，也请将代码放在这里
-* notes -- markdown
-* report -- 实验报告
-* 课件 -- 教师发的，对于自己找的补充资料，放在`/notes`文件夹下
-* 习题 -- 作业和一些补充
-* exams
-
-## 参考
-
-* [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles)
-* [USTC-Course](https://github.com/USTC-Resource/USTC-Course)
-* [SJTU-Courses](https://github.com/kxxwz/SJTU-Courses)
-* [XJTU-Share](https://github.com/cantjie/XJTU-Share)
-* [江理学习资料库](https://github.com/sikouhjw/jxust-Learning-database)
