@@ -1,0 +1,56 @@
+% 修改此处以选择使用的模板
+\documentclass{course-thesis/theme-2639015-final}
+
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{minted}
+
+% Build: xelatex --shell-escape 2639015-ASIC专用集成电路实践课程报告
+
+% =============================================
+% Part 0 信息
+% =============================================
+
+\mathsetup{
+  % 学院
+  institution = {电子与信息工程学院},
+  % 专业
+  discipline = {集成电路设计与集成系统},
+  % 课程编号
+  course-number = {2639015.0x},
+  % 课程名称
+  course-name = {ASIC专用集成电路全流程设计},
+  % 学生姓名
+  student-name = {某同学},
+  % 学号
+  student-id = {2021****},
+  % 班级
+  student-class = {集成21391},
+  % 指导老师
+  teacher = {某老师},
+  % 日期——年
+  year = {2024},
+  % 日期——月
+  month = {10},
+  % 日期——日
+  day= {10},
+}
+
+\begin{document}
+
+% =============================================
+% Part 1  封面
+% =============================================
+
+\makecover
+
+% =============================================
+% Part 2 主文档
+% =============================================
+
+% （报告要有两部分：ALU和三选一任务，论文字体： 宋体、 5号、 单倍行距）
+
+\input{chapter/chapter1.tex}
+\input{chapter/chapter2.tex}
+
+\end{document}
