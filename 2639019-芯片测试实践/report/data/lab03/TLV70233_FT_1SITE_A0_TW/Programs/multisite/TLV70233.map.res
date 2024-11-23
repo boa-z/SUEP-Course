@@ -1,0 +1,25 @@
+enum
+{
+DVI_VIN=0,
+DVI_VOUT=1,
+OVI_EN=2,
+TMU_EN=3,
+TMU_VOUT=4,
+KCvin=5,
+KCvout=6,
+Relay12_20=7,
+Relay23_20=8,
+Relay34_20=9,
+Relay45_20=10,
+Relay56_20=11,
+Relay67_20=12,
+Relay78_20=13,
+Relay81_20=14,
+Relay2G_20=15,
+Relay4G_20=16,
+Relay6G_20=17,
+Relay7G_20=18,
+Relay8G_20=19,
+Relay_20BankGnd=20,
+ALL_PINS	= LASTPIN	// This must be always last line
+};

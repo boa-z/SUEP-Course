@@ -1,0 +1,29 @@
+Site: 2
+PinNum        PinName        Site1	   	Site2		 	  
+//VI's
+0             DVI_VIN        DVI_11_1  	       DVI_13_0
+1             DVI_VOUT       DVI_11_0  	       DVI_13_1
+2             OVI_EN         OV2_1_0	       OV2_3_0
+//TMU   
+3             TMU_EN         TMU_6_B_1         TMU_6_B_1
+4             TMU_VOUT       TMU_6_A_1         TMU_6_A_1
+//MUX RELAY
+5             KCvin	     MUX_20_2_4        MUX_20_8_4
+6             KCvout	     MUX_20_6_2	       MUX_20_4_2
+//MUX BANK&GND			  
+7             Relay12_20     MUX_20_B_1        MUX_20_B_1 	  
+8             Relay23_20     MUX_20_B_2        MUX_20_B_2 	   
+9             Relay34_20     MUX_20_B_3        MUX_20_B_3		   
+10            Relay45_20     MUX_20_B_4	       MUX_20_B_4		    
+11            Relay56_20     MUX_20_B_5        MUX_20_B_5		      
+12            Relay67_20     MUX_20_B_6        MUX_20_B_6 		     
+13            Relay78_20     MUX_20_B_7        MUX_20_B_7		   
+14            Relay81_20     MUX_20_B_8        MUX_20_B_8		   
+15            Relay2G_20     MUX_20_2_G        MUX_20_2_G			  
+16            Relay4G_20     MUX_20_4_G        MUX_20_4_G		   
+17            Relay6G_20     MUX_20_6_G        MUX_20_6_G		   
+18            Relay7G_20     MUX_20_7_G        MUX_20_7_G  			 
+19            Relay8G_20     MUX_20_8_G        MUX_20_8_G 						
+//MUX BANK&GND groups
+#20           Relay_20BankGnd      Relay12_20,Relay23_20,Relay34_20,Relay45_20,Relay56_20,Relay67_20,Relay78_20,Relay81_20,Relay2G_20,Relay4G_20,Relay6G_20,Relay7G_20,Relay8G_20
+//End
